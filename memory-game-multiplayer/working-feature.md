@@ -1,0 +1,2 @@
+# what I fixed
+i added two player objectes with name and score properties. changed the checkformatch funtion to work with two players. switch turn fuction. updated UI to show that there is two players with scores and whos turn it is.

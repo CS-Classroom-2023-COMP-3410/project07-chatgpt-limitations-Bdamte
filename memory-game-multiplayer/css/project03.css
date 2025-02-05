@@ -151,4 +151,49 @@ body {
   #restartBtn:hover {
     background-color: #B88836;
   }
+  /* --- Player Info Styling --- */
+
+/* Container for player info */
+.player-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #D4E7C5;  /* Soft Green */
+  border: 3px solid #2D4A22;  /* Dark Jungle Green */
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+}
+
+/* Current turn display styling */
+#playerTurn {
+  font-size: 22px;
+  font-weight: bold;
+  color: #3A5311; /* Deep Jungle Green */
+  margin-right: 20px;
+}
+
+/* Player score styling */
+#player1Score,
+#player2Score {
+  font-size: 20px;
+  padding: 5px 10px;
+  border: 2px solid #3A5311;
+  border-radius: 5px;
+  margin: 0 10px;
+  background-color: #A3C585;  /* Light Green */
+}
+
+/* Optional: Differentiate each player's score further */
+#player1Score {
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#player2Score {
+  box-shadow: -2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
   

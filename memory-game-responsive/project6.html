@@ -4,7 +4,273 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Memory Matching Game</title>
-  <link rel="stylesheet" href="project6.css">
+  <!-- <link rel="stylesheet" href="project6.css"> -->
+  <style>
+    /* 🎭 Unique Dance Animations 🎭 */
+@keyframes pivotDance {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); transform-origin: bottom center; }
+  50% { transform: rotate(10deg); transform-origin: bottom center; }
+  75% { transform: rotate(-10deg); transform-origin: bottom center; }
+}
+
+@keyframes bounceDance {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes topPivotDance {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); transform-origin: top center; }
+  50% { transform: rotate(10deg); transform-origin: top center; }
+  75% { transform: rotate(-10deg); transform-origin: top center; }
+}
+
+@keyframes surpriseDance {
+  0%, 100% { transform: scale(1); }
+  25% { transform: rotate(-10deg) scale(1.1); }
+  50% { transform: rotate(10deg) scale(0.9); }
+  75% { transform: rotate(-5deg) scale(1.05); }
+}
+
+@keyframes swingDance {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-15deg); transform-origin: center center; }
+  50% { transform: rotate(15deg); }
+  75% { transform: rotate(-15deg); }
+}
+
+@keyframes jitterDance {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  50% { transform: translateX(2px); }
+  75% { transform: translateX(-2px); }
+}
+
+@keyframes spinDance {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes floatDance {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* 🎭 Unique Fruit Animations (Dancing & Rotating) */
+@keyframes rotateDance {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(360deg); }
+}
+
+@keyframes bounceDance {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes wiggleDance {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-15deg); }
+  50% { transform: rotate(15deg); }
+  75% { transform: rotate(-15deg); }
+}
+
+/* 🍉 Fruit Border Container */
+/* 🍉 Fruit Border Container */
+.fruit-border {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* Ensures game elements remain interactive */
+    overflow: visible; /* Ensures no hidden elements */
+    z-index: 999;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: space-between;
+}
+
+
+/* 🍎 Individual Fruit Border Items */
+.fruit-item {
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 🎮 Centered Game Container */
+/* 🎮 Centered Game Container */
+.game-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: min(70vw, 500px); /* Smaller width to fit within the border */
+    background: #fff;
+    border: 5px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    z-index: 1000;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin-top: 20px; /* Add margin to avoid overlapping the top border */
+}
+/* 🃏 Game Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* 🔘 Buttons */
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #6fa3ef;
+    color: white;
+}
+
+button:hover {
+    background: #5c8fd6;
+}
+/* 🎭 Assign Animations */
+.pivot-dance { animation: pivotDance 0.6s infinite; }
+.bounce-dance { animation: bounceDance 0.6s infinite; }
+.top-pivot-dance { animation: topPivotDance 0.6s infinite; }
+.surprise-dance { animation: surpriseDance 0.6s infinite; }
+.swing-dance { animation: swingDance 0.8s infinite ease-in-out; }
+.jitter-dance { animation: jitterDance 0.3s infinite; }
+.spin-dance { animation: spinDance 1.5s linear infinite; }
+.float-dance { animation: floatDance 1.2s infinite ease-in-out; }
+
+/* ✅ Matched cards stay green & fruit keeps dancing */
+.card.match .card-front, 
+.card.match .card-back {
+  background: green !important;
+}
+
+/* 🎊 Confetti Animation 🎊 */
+@keyframes confetti-fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+/* Container for confetti */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* Prevents interaction */
+  overflow: hidden;
+  z-index: 9999;
+}
+
+/* Each confetti piece */
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: red; /* Default color */
+  opacity: 0.8;
+  animation: confetti-fall 3s linear infinite;
+}
+
+/* 🎨 Different colors for confetti */
+.confetti:nth-child(odd) { background: blue; }
+.confetti:nth-child(even) { background: yellow; }
+.confetti:nth-child(3n) { background: green; }
+.confetti:nth-child(4n) { background: orange; }
+.confetti:nth-child(5n) { background: pink; }
+
+
+
+/* General Styling */
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f5f5dc; /* Beige background */
+  margin: 0;
+  padding: 20px;
+}
+
+.game-container {
+  width: 80%;
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background: #fff;
+  border: 2px solid #333;
+  border-radius: 10px;
+}
+
+h1 {
+  margin-bottom: 20px;
+}
+
+.info {
+  margin-bottom: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.card {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  position: relative;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+
+.card.flip .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 36px;
+  transition: background 0.3s;
+}
+
+.card-front {
+  background: #6fa3ef; /* Light blue */
+  color: white;
+}
+
+.card-back {
+  background: #d3d3d3; /* Light gray inside */
+  color: black;
+  transform: rotateY(180deg);
+  display: flex;
+}
+
+  </style>
 </head>
 <body>
   <div class="game-container">
@@ -17,6 +283,241 @@
     <button id="start-button">Start Game</button>
     <button id="restart-button" disabled>Restart Game</button>
   </div>
-  <script src="project6.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", () => {
+    const gameGrid = document.getElementById("game-grid");
+    const moveCounter = document.getElementById("move-counter");
+    const timer = document.getElementById("timer");
+    const startButton = document.getElementById("start-button");
+    const restartButton = document.getElementById("restart-button");
+  
+    const cards = [
+      "🍎", "🍎", "🍌", "🍌", "🍇", "🍇", "🍓", "🍓",
+      "🍒", "🍒", "🍍", "🍍", "🥝", "🥝", "🍉", "🍉"
+    ];
+  
+    const fruitDanceMap = {
+      "🍎": "pivot-dance",
+      "🍌": "bounce-dance",
+      "🍇": "top-pivot-dance",
+      "🍓": "surprise-dance",
+      "🍒": "swing-dance",
+      "🍍": "jitter-dance",
+      "🥝": "spin-dance",
+      "🍉": "float-dance"
+    };
+  
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let moves = 0;
+    let gameTimer = null;
+    let secondsElapsed = 0;
+    let gameStarted = false;
+  
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+  
+    function initializeGame() {
+    flippedCards = [];
+    matchedPairs = 0;
+    moves = 0;
+    secondsElapsed = 0;
+    moveCounter.textContent = moves;
+    timer.textContent = "0:00"; // Reset timer display
+    clearInterval(gameTimer); // Stop any previous timer
+    gameGrid.innerHTML = "";
+    gameStarted = true;
+    restartButton.disabled = false;
+    startButton.disabled = true;
+
+    // Adjust game container size and position
+    gameContainer.style.width = "min(70vw, 500px)"; // Smaller width
+    gameContainer.style.top = "calc(50% + 20px)"; // Move down slightly
+    gameContainer.style.left = "50%"; // Center horizontally
+    gameContainer.style.transform = "translate(-50%, -50%)"; // Ensure centering
+
+    shuffle(cards).forEach(card => {
+        const cardElement = document.createElement("div");
+        cardElement.classList.add("card");
+
+        const cardInner = document.createElement("div");
+        cardInner.classList.add("card-inner");
+
+        const cardFront = document.createElement("div");
+        cardFront.classList.add("card-front");
+
+        const cardBack = document.createElement("div");
+        cardBack.classList.add("card-back");
+
+        const fruitSpan = document.createElement("span");
+        fruitSpan.textContent = card;
+        fruitSpan.classList.add(fruitDanceMap[card]);
+        cardBack.appendChild(fruitSpan);
+
+        cardInner.appendChild(cardFront);
+        cardInner.appendChild(cardBack);
+        cardElement.appendChild(cardInner);
+
+        cardElement.addEventListener("click", flipCard);
+        gameGrid.appendChild(cardElement);
+    });
+
+    startTimer(); // Start the timer only when game starts
+}
+  
+    function startTimer() {
+      clearInterval(gameTimer); // Ensure no duplicate timers
+      secondsElapsed = 0;
+      gameTimer = setInterval(() => {
+          secondsElapsed++;
+          const minutes = Math.floor(secondsElapsed / 60);
+          const seconds = secondsElapsed % 60;
+          timer.textContent = `${minutes}:${seconds.toString().padStart(2, "0")}`;
+      }, 1000);
+    }
+  
+    function flipCard() {
+      if (!gameStarted || flippedCards.length === 2) return;
+    
+      const card = this.querySelector('.card-inner');
+    
+      if (!this.classList.contains("flip")) {
+          this.classList.add("flip");
+          flippedCards.push(this);
+  
+          if (flippedCards.length === 2) {
+              moves++;
+              moveCounter.textContent = moves;
+              checkForMatch();
+          }
+      }
+    }
+  
+    function checkForMatch() {
+      const [card1, card2] = flippedCards;
+      const cardBack1 = card1.querySelector(".card-back");
+      const cardBack2 = card2.querySelector(".card-back");
+      const fruit1 = cardBack1.querySelector("span");
+      const fruit2 = cardBack2.querySelector("span");
+  
+      if (cardBack1.textContent === cardBack2.textContent) {
+          card1.classList.add("match");
+          card2.classList.add("match");
+  
+          fruit1.style.animation = getComputedStyle(fruit1).animation;
+          fruit2.style.animation = getComputedStyle(fruit2).animation;
+  
+          matchedPairs++;
+          flippedCards = [];
+  
+          if (matchedPairs === cards.length / 2) {
+              clearInterval(gameTimer);
+              setTimeout(() => {
+                  triggerConfetti(); // 🎊 Trigger confetti animation!
+                  alert(`🎉 Congratulations! You completed the game in ${moves} moves and ${timer.textContent}.`);
+              }, 500);
+          }
+      } else {
+          setTimeout(() => {
+              card1.classList.remove("flip");
+              card2.classList.remove("flip");
+              flippedCards = [];
+          }, 1000);
+      }
+    }
+  
+    function triggerConfetti() {
+      const confettiContainer = document.createElement("div");
+      confettiContainer.classList.add("confetti-container");
+      document.body.appendChild(confettiContainer);
+  
+      for (let i = 0; i < 100; i++) {
+          const confetti = document.createElement("div");
+          confetti.classList.add("confetti");
+  
+          // Randomize positions
+          confetti.style.left = `${Math.random() * 100}vw`;
+          confetti.style.animationDuration = `${Math.random() * 3 + 2}s`; /* Falls slower */
+          confetti.style.animationDelay = `${Math.random()}s`;
+  
+          confettiContainer.appendChild(confetti);
+      }
+  
+      // Remove confetti after it reaches the bottom
+      setTimeout(() => {
+          confettiContainer.remove();
+      }, 5000);
+    }
+  
+    startButton.addEventListener("click", initializeGame);
+    restartButton.addEventListener("click", initializeGame);
+  });
+  
+  document.addEventListener("DOMContentLoaded", () => {
+    const fruitBorderContainer = document.createElement("div");
+    fruitBorderContainer.classList.add("fruit-border");
+    document.body.appendChild(fruitBorderContainer);
+
+    const fruitOptions = ["🍎", "🍌", "🍇", "🍓", "🍒", "🍍", "🥝", "🍉"];
+    const fruitSize = 40;
+    let screenWidth = window.innerWidth;
+    let screenHeight = window.innerHeight;
+
+    function createFruit(x, y) {
+        const fruitItem = document.createElement("div");
+        fruitItem.classList.add("fruit-item");
+        fruitItem.textContent = fruitOptions[Math.floor(Math.random() * fruitOptions.length)];
+        fruitItem.style.position = "absolute";
+        fruitItem.style.left = `${x}px`;
+        fruitItem.style.top = `${y}px`;
+
+        const animations = ["rotateDance", "bounceDance", "wiggleDance"];
+        fruitItem.style.animation = `${animations[Math.floor(Math.random() * animations.length)]} 3s infinite`;
+
+        fruitBorderContainer.appendChild(fruitItem);
+    }
+
+    function generateFruitBorder() {
+    fruitBorderContainer.innerHTML = "";
+    screenWidth = window.innerWidth;
+    screenHeight = window.innerHeight;
+
+    const borderPadding = fruitSize; // Ensures it aligns to edges properly
+    const stepSize = Math.max(40, Math.floor(screenWidth / 30)); // Ensures even spacing
+
+    // Top and Bottom Borders
+    for (let x = 0; x < screenWidth; x += stepSize) {
+        createFruit(x, 0); // Top row
+        createFruit(x, screenHeight - fruitSize); // Bottom row
+    }
+
+    // Left and Right Borders
+    for (let y = 0; y < screenHeight; y += stepSize) {
+        createFruit(0, y); // Left column
+        createFruit(screenWidth - fruitSize, y); // Right column
+    }
+}
+
+    generateFruitBorder();
+    window.addEventListener("resize", generateFruitBorder);window.addEventListener("resize", () => {
+    setTimeout(generateFruitBorder, 100); // Slight delay to ensure proper repositioning
+});
+
+    const gameContainer = document.querySelector(".game-container");
+    const gameGrid = document.querySelector(".grid");
+    const startButton = document.getElementById("start-button");
+
+    startButton.addEventListener("click", () => {
+        gameContainer.style.width = "calc(100vw - 80px)"; /* Adjust width to leave space for the border */
+        gameContainer.style.height = "calc(100vh - 80px)"; /* Adjust height to leave space for the border */
+        gameContainer.style.maxWidth = "600px";
+        gameContainer.style.maxHeight = "600px";
+    });
+});
+  </script>
 </body>
 </html>
